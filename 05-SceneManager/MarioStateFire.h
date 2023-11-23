@@ -1,0 +1,39 @@
+#pragma once
+#pragma once
+#include "BaseMarioState.h"
+
+#define ID_ANI_FIRE_MARIO_IDLE_RIGHT 2400
+#define ID_ANI_FIRE_MARIO_IDLE_LEFT 2401
+
+#define ID_ANI_FIRE_MARIO_WALKING_RIGHT 2500
+#define ID_ANI_FIRE_MARIO_WALKING_LEFT 2501
+
+#define ID_ANI_FIRE_MARIO_RUNNING_RIGHT 2600
+#define ID_ANI_FIRE_MARIO_RUNNING_LEFT 2601
+
+#define ID_ANI_FIRE_MARIO_JUMP_WALK_RIGHT 2700
+#define ID_ANI_FIRE_MARIO_JUMP_WALK_LEFT 2701
+
+#define ID_ANI_FIRE_MARIO_JUMP_RUN_RIGHT 2800
+#define ID_ANI_FIRE_MARIO_JUMP_RUN_LEFT 2801
+
+#define ID_ANI_FIRE_MARIO_SIT_RIGHT 2900
+#define ID_ANI_FIRE_MARIO_SIT_LEFT 2901
+
+#define ID_ANI_FIRE_MARIO_BRACE_RIGHT 2100
+#define ID_ANI_FIRE_MARIO_BRACE_LEFT 2101
+
+#define ID_ANI_FIRE_MARIO_FIRE_ATTACK_RIGHT 2200
+#define ID_ANI_FIRE_MARIO_FIRE_ATTACK_LEFT 2201
+
+class CMario;
+
+class MarioStateFire :
+    public BaseMarioState
+{
+public:
+    MarioStateFire(CMario* mario);
+
+    virtual void Render();
+};
+

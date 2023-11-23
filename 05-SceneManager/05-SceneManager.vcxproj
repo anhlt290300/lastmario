@@ -161,8 +161,8 @@
     <ClCompile Include="Hammer.cpp" />
     <ClCompile Include="HelpBox.cpp" />
     <ClCompile Include="HUD.cpp" />
-    <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="Koopas.cpp" />
+    <ClCompile Include="MarioStateFire.cpp" />
     <ClCompile Include="MarioStateBig.cpp" />
     <ClCompile Include="MarioStateRacoon.cpp" />
     <ClCompile Include="MarioStateSmall.cpp" />
@@ -218,9 +218,9 @@
     <ClInclude Include="Hammer.h" />
     <ClInclude Include="HelpBox.h" />
     <ClInclude Include="HUD.h" />
-    <ClInclude Include="IntroScene.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="MarioStateBig.h" />
+    <ClInclude Include="MarioStateFire.h" />
     <ClInclude Include="MarioStateRacoon.h" />
     <ClInclude Include="MarioStateSmall.h" />
     <ClInclude Include="Mushroom.h" />

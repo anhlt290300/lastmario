@@ -14,12 +14,14 @@ private:
 public:
 	float width = 0.0f;
 	float height = 0.0f;
-
+	bool tracking = true;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Render();
 
 	void SetWidth(float width) { this->width = width; }
 	void SetHeight(float height) { this->height = height; }
+
+	void IsTracking() { this->tracking = !this->tracking; };
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 

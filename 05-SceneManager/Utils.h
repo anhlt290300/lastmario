@@ -63,7 +63,6 @@ enum EType {
 
 #define MAIN_SCENE_ID 6
 #define HIDDEN_SCENE_ID 7
-#define INTRO_SCENE_ID 3
 #define WORLD_MAP 8
 
 

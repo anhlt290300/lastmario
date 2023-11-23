@@ -7,7 +7,7 @@
 void CTail::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x-8;
-	right = x + 24;
+	right = x + 20;
 	top = y;
 	bottom = y + 5;
 }
@@ -20,7 +20,10 @@ void CTail::Render()
 void CTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	this->x = this->mario->GetX();
-	this->y = this->mario->GetY();// +6;
+	this->y = this->mario->GetY();
+	DebugOut(L"tracking %d\n", this->tracking);
+	//// Check tail true of flase
+	
 
 	for (int i = 0; i < coObjects->size(); i++)
 	{
@@ -40,22 +43,27 @@ void CTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CTail::OnCollisionWithQuestionBrick(LPGAMEOBJECT& e)
 {
 	CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e);
-	if (!questionBrick->isEmpty) {
+	if (!questionBrick->isEmpty && this->tracking) {
 		questionBrick->Bounce();
+		this->IsTracking();
 	}
 }
 
 void CTail::OnCollisionWithGoldBrick(LPGAMEOBJECT& e)
 {
 	GoldBrick* goldbrick = dynamic_cast<GoldBrick*>(e);
-	if (!goldbrick->isEmpty) {
+	if (!goldbrick->isEmpty && this->tracking) {
 		goldbrick->SetBreak(true);
+		this->IsTracking();
 	}
 }
 
 void CTail::OnCollisionWithEnemy(LPGAMEOBJECT& e)
 {
-	e->SetState(ENEMY_STATE_IS_TAIL_ATTACKED);
+	if (this->tracking) {
+		e->SetState(ENEMY_STATE_IS_TAIL_ATTACKED);
+		this->IsTracking();
+	}
 }
 
 CTail::CTail(CMario* mario)

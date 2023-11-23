@@ -31,6 +31,9 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_4:
 		mario->SetLevel(MARIO_LEVEL_RACOON);
 		break;
+	case DIK_5:
+		mario->SetLevel(MARIO_LEVEL_FIRE);
+		break;
 	case DIK_0:
 		mario->SetState(MARIO_STATE_DIE);
 		break;

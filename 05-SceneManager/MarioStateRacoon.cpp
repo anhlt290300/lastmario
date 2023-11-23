@@ -18,7 +18,14 @@ void MarioStateRacoon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	BaseMarioState::Update(dt, coObjects);
 
 	if (attackTimer.GetState() == TimerState::RUNNING) {
-		tail->Update(dt, coObjects);
+		if (tail->tracking) {
+			tail->Update(dt, coObjects);
+		}
+	}
+	if (attackTimer.GetState() == TimerState::TIMEOVER) {
+		if (!tail->tracking) {
+			tail->IsTracking();
+		}
 	}
 }
 
@@ -178,10 +185,16 @@ void MarioStateRacoon::Render()
 				aniId = ID_ANI_RACOON_MARIO_FLOATING_RIGHT;
 				break;
 			case MarioJumpState::Fall:
-				aniId = ID_ANI_RACOON_MARIO_JUMP_WALK_RIGHT;
+				if(attackTimer.GetState() != TimerState::RUNNING)
+					aniId = ID_ANI_RACOON_MARIO_JUMP_WALK_RIGHT;
+				else
+					aniId = ID_ANI_RACOON_MARIO_ATTACK_FROM_RIGHT;
 				break;
 			case MarioJumpState::Jump:
-				aniId = ID_ANI_RACOON_MARIO_JUMP_WALK_RIGHT;
+				if (attackTimer.GetState() != TimerState::RUNNING)
+					aniId = ID_ANI_RACOON_MARIO_JUMP_WALK_RIGHT;
+				else
+					aniId = ID_ANI_RACOON_MARIO_ATTACK_FROM_RIGHT;
 				break;
 			case MarioJumpState::HighJump:
 				aniId = ID_ANI_RACOON_MARIO_JUMP_WALK_RIGHT;
@@ -196,8 +209,6 @@ void MarioStateRacoon::Render()
 	}
 	else if (attackTimer.GetState() == TimerState::RUNNING) {
 		aniId = ID_ANI_RACOON_MARIO_ATTACK_FROM_RIGHT;
-		mario->SetTail();
-
 		tail->Render();
 	}
 	else {

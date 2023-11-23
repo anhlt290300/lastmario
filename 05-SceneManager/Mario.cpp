@@ -21,6 +21,7 @@
 #include "MarioStateSmall.h"
 #include "MarioStateBig.h"
 #include "MarioStateRacoon.h"
+#include "MarioStateFire.h"
 
 #include "Collision.h"
 
@@ -64,14 +65,17 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		SetLevel(MARIO_LEVEL_RACOON);
 	}
 	if (game->IsKeyPressed(DIK_4)) {
-		SetPosition(2012, 250);
+		SetLevel(MARIO_LEVEL_FIRE);
 	}
 	if (game->IsKeyPressed(DIK_5)) {
+		SetPosition(2012, 250);
+	}
+	if (game->IsKeyPressed(DIK_6)) {
 		SetPosition(1440, 50);
 
 		playScene->isFlyCam = true;
 	}
-	if (game->IsKeyPressed(DIK_6)) {
+	if (game->IsKeyPressed(DIK_7)) {
 		SetPosition(2260, 50);
 		playScene->isFlyCam = true;
 	}
@@ -80,6 +84,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (this->x < 0) {
 			this->x = 0;
 		}
+	}
+	
+	if (isReturnY) {
+		//DebugOut(L"isReturnY %d\n", isReturnY);
+		y = y - 5;
+		isReturnY = false;
 	}
 
 	this->vy += ay * dt;
@@ -344,7 +354,7 @@ void CMario::Render()
 	}
 
 	DebugOutTitle(L"Coins: %f", GetScore());//coin
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CMario::SetState(int state)
@@ -489,6 +499,10 @@ void CMario::SetLevel(int l)
 	{
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
+	if (this->level == MARIO_LEVEL_FIRE)
+	{
+		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+	}
 	level = l;
 
 	switch (l)
@@ -501,6 +515,9 @@ void CMario::SetLevel(int l)
 		break;
 	case MARIO_LEVEL_RACOON:
 		this->stateHandler = new MarioStateRacoon(this);
+		break;
+	case MARIO_LEVEL_FIRE:
+		this->stateHandler = new MarioStateFire(this);
 		break;
 	}
 }

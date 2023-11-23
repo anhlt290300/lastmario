@@ -159,9 +159,6 @@
     <ClCompile Include="Backup.cpp">
       <Filter>Mario</Filter>
     </ClCompile>
-    <ClCompile Include="IntroScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PowerBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -185,6 +182,9 @@
     </ClCompile>
     <ClCompile Include="HelpBox.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MarioStateFire.cpp">
+      <Filter>Mario</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -332,9 +332,6 @@
     <ClInclude Include="Backup.h">
       <Filter>Mario</Filter>
     </ClInclude>
-    <ClInclude Include="IntroScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PowerBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -358,6 +355,9 @@
     </ClInclude>
     <ClInclude Include="HelpBox.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MarioStateFire.h">
+      <Filter>Mario</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

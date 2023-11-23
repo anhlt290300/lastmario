@@ -27,14 +27,16 @@ void BaseMarioState::WalkUpdate(DWORD dt)
 
 	CGame* game = CGame::GetInstance();
 	float vx_check = mario->GetVX();
-	if (game->IsKeyDown(DIK_DOWN)) {
+	if (game->IsKeyDown(DIK_DOWN) && mario->GetLevel()!= MARIO_LEVEL_SMALL) {
 		if (mario->jumpState == MarioJumpState::Idle) {
 			mario->walkState = MarioWalkState::Sit;
 			mario->drag = MARIO_CROUCH_DRAG_FORCE;
 		}
 	}
 	if (game->IsKeyReleased(DIK_DOWN) && mario->walkState == MarioWalkState::Sit) {
+		mario->isReturnY = true;
 		mario->walkState = MarioWalkState::Idle;
+		
 	}
 	if (game->IsKeyDown(DIK_RIGHT) || game->IsKeyDown(DIK_LEFT))
 	{
@@ -194,6 +196,7 @@ void BaseMarioState::holdingShellUpdate(DWORD dt)
 
 void BaseMarioState::warpUpdate(DWORD dt)
 {
+
 }
 
 void BaseMarioState::PowerMeterUpdate(DWORD dt)
@@ -229,4 +232,5 @@ void BaseMarioState::GetBoundingBox(float& left, float& top, float& right, float
 		top = mario->GetY() - MARIO_BIG_BBOX_HEIGHT / 2;
 		bottom = top + MARIO_BIG_BBOX_HEIGHT;
 	}
+	
 }

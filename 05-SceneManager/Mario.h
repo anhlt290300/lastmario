@@ -49,8 +49,6 @@
 
 #pragma region ANIMATION_ID
 
-
-
 //FIRE MARIO
 #define ID_ANI_FIRE_MARIO_IDLE_RIGHT 2400
 #define ID_ANI_FIRE_MARIO_IDLE_LEFT 2401
@@ -212,8 +210,9 @@ public:
 	boolean isWalking = false;
 	boolean isRunningMax = false;
 	boolean canFallSlow = false;
-	BOOLEAN isSitting;
+	boolean isSitting;
 	boolean isDisable = true;
+	boolean isReturnY = false;
 
 	void SetTail();
 
