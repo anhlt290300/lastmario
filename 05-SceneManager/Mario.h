@@ -6,6 +6,7 @@
 #include "Utils.h"
 
 #include "debug.h"
+#include "Timer.h"
 
 #define MARIO_WALKING_SPEED		0.07f
 #define MARIO_RUNNING_SPEED		0.1f
@@ -20,6 +21,8 @@
 #define MARIO_JUMP_MAX 0.8f
 
 #define MARIO_GRAVITY			0.0018f
+
+#define MARIO_GRAVITY_IN_PIPE	0.00008f
 
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
 
@@ -204,13 +207,21 @@ public:
 		return (state != MARIO_STATE_DIE); 
 	}
 
-	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable==0); }
+	int IsBlocking() { 
+		if(!isInPipe)	return (state != MARIO_STATE_DIE && untouchable == 0);
+		else {
+			DebugOut(L"vao");
+			return true;
+		}
+	}
+
 	boolean IsAttack = false;
 	boolean isRunning = false;
 	boolean isWalking = false;
 	boolean isRunningMax = false;
 	boolean canFallSlow = false;
-	boolean isSitting;
+	boolean isSitting = false;
+	boolean isInPipe = false;
 	boolean isDisable = true;
 	boolean isReturnY = false;
 
@@ -270,6 +281,13 @@ public:
 
 	void SetLive(int l) { live = l; }
 	int GetLive() { return live; }
+
+	Timer inPipeTimer{ true, 2000L };
+	
+	int mScreenNo = -1;
+	float mCx = -1;
+	float mCy = -1;
+
 
 	LPGAMEOBJECT hand;
 };

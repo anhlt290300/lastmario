@@ -44,6 +44,7 @@ CMario::CMario(float x, float y) : CGameObject(x, y) {
 	live = 0;
 	hand = NULL;
 	isDisable = false;
+	inPipeTimer.Stop();
 //	tail = new CTail(x, y);
 }
 
@@ -51,6 +52,21 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
 	float l, t, r, b;
 	this->GetBoundingBox(l, t, r, b);
+	inPipeTimer.Update(dt);
+	ay = MARIO_GRAVITY;
+	//DebugOut(L"x: %f\n", x);
+	//DebugOut(L"y: %f\n", y);
+
+	if (inPipeTimer.GetState() == TimerState::TIMEOVER && mScreenNo != -1) {
+		int _mScreenNo = mScreenNo;
+		float _mCx = mCx;
+		float _mCy = mCy;
+		isInPipe = false;
+		mScreenNo = -1;
+		mCx = -1;
+		mCy = -1;
+		CGame::GetInstance()->SwitchToHiddenMap(_mScreenNo, _mCx, _mCy);
+	}
 
 	LPGAME game = CGame::GetInstance();
 	CPlayScene* playScene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
@@ -80,6 +96,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		playScene->isFlyCam = true;
 	}
 
+	if (inPipeTimer.GetState() == TimerState::RUNNING) {
+		isInPipe = true;
+	}	
+
 	if (!isDisable) {
 		if (this->x < 0) {
 			this->x = 0;
@@ -92,18 +112,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		isReturnY = false;
 	}
 
+	if (isInPipe) {
+		vx = 0;
+		ay = MARIO_GRAVITY_IN_PIPE;
+	}
+
 	this->vy += ay * dt;
 
-	stateHandler->Update(dt, coObjects);
-
+	stateHandler->Update(dt, coObjects);	
 	
-
-	/*float finall, finalt, finalr, finalb;
-	this->GetBoundingBox(finall, finalt, finalr, finalb);
-
-	if (b - t != finalb - finalt) {
-		this->y += b - finalb;
-	}*/
+	//inPipeTimer->Update(dt);
 
 	for (size_t i = 0; i < ListEffect.size(); i++)
 	{
@@ -123,7 +141,8 @@ void CMario::SetTail()
 void CMario::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
-	y += vy * dt;
+	if (!isInPipe) y += vy * dt;
+	else y += vy;
 }
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -327,13 +346,20 @@ void CMario::OnCollisionWithGoldBrick(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithPortalIn(LPCOLLISIONEVENT e)
 {
+	
 	LPGAME game = CGame::GetInstance();
 	PortalIn* p = (PortalIn*)e->obj;//dynamic_cast<PortalIn*>(e->obj);
 	if (e->ny != 0) {
 		if ((p->portal_dir == -1 && game->IsKeyDown(DIK_DOWN)) || (p->portal_dir == 1 && game->IsKeyDown(DIK_S))) {
 			if (p->sceneNo == HIDDEN_SCENE_ID) {
 				DebugOut(L"New map position: x: %f %f\n", p->GetCX(), p->GetCY());
-				CGame::GetInstance()->SwitchToHiddenMap(p->sceneNo, p->GetCX(), p->GetCY());
+				if (inPipeTimer.GetState() != TimerState::RUNNING) {
+					inPipeTimer.Reset();
+					inPipeTimer.Start();
+					mScreenNo = p->sceneNo;
+					mCx = p->GetCX();
+					mCy = p->GetCY();
+				}						
 			}
 			if (p->sceneNo == MAIN_SCENE_ID) {
 				DebugOut(L"New map position: x: %f %f\n", p->GetCX(), p->GetCY());

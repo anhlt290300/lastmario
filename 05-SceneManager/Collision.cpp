@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 #include "debug.h"
+#include "Mario.h"
 
 #define BLOCK_PUSH_FACTOR 0.4f
 
@@ -164,9 +165,11 @@ void CCollision::Scan(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* objDe
 	for (UINT i = 0; i < objDests->size(); i++)
 	{
 		LPCOLLISIONEVENT e = SweptAABB(objSrc, dt, objDests->at(i));
-
-		if (e->WasCollided()==1)
+		CMario* mario = (CMario*)objSrc;
+		if (e->WasCollided() == 1) {
+			DebugOut(L" %d", mario);
 			coEvents.push_back(e);
+		}			
 		else
 			delete e;
 	}

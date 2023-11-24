@@ -173,7 +173,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new PiranhaPipe(x, y, type);
 		break;
 	}
-
 	case OBJECT_TYPE_PLATFORM:
 	{
 
