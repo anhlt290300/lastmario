@@ -602,6 +602,7 @@ void CGame::SwitchToHiddenMap(int scene_id, int cx, int cy)
 	if (isLoad) {
 
 		s->Load();
+		
 	}
 
 	CMario* mario = ((CPlayScene*)scenes[current_scene])->GetPlayer();

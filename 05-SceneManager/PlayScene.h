@@ -56,7 +56,10 @@ public:
 
 	vector<LPGAMEOBJECT> objects;
 
+	int screenId = -1;
+
 	bool isFlyCam = false;
+	bool isHiddenMap = false;
 	int remainingTime;
 
 	void SetStartTime(int time) { gameTime->SetTimeOut(time); }

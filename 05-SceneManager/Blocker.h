@@ -11,7 +11,7 @@ public:
 	int allowLeft = 0, allowRight = 0, allowBottom = 0, allowTop = 0;
 
 	Blocker(float x, float y, int allowLeft, int allowRight, int allowBottom, int allowTop);
-	virtual void Render() { }
+	virtual void Render() { RenderBoundingBox(); }
 	void Update(DWORD dt) {};
 	virtual int IsBlocking() { return 0; }
 

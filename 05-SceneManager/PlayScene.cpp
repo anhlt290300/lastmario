@@ -30,6 +30,7 @@ using namespace std;
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
 {
+	screenId = id;
 	player = NULL;
 	key_handler = new CSampleKeyHandler(this);
 }
@@ -345,7 +346,14 @@ void CPlayScene::Update(DWORD dt)
 {
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
-
+	if (this->screenId == HIDDEN_SCENE_ID && !isHiddenMap) {
+		isHiddenMap = true;
+		//debugout(l"ishiddenmap %d \n", ishiddenmap);
+	}
+	if (this->screenId != HIDDEN_SCENE_ID && isHiddenMap) {
+		isHiddenMap = false;
+	}
+	
 	gameTime->Update(dt);
 	remainingTime = gameTime->GetTime();
 
@@ -396,23 +404,30 @@ void CPlayScene::SetCam(float cx, float cy)
 
 	cx -= sw / 2;
 	// CamX
-	if (cx <= 0)//Left Edge
-		cx = 0;
-	if (cx >= mw - sw)//Right Edge
-		cx = (float)mw - (float)sw;
-
+	if (!isHiddenMap) {
+		if (cx <= 0)//Left Edge
+			cx = 0;
+		if (cx >= mw - sw)//Right Edge
+			cx = (float)mw - (float)sw;
+	}
 	if(isFlyCam){ 
 		cy -= (float)sh / 2 + MARIO_BIG_BBOX_HEIGHT;
+	}
+	if (isHiddenMap) {
+		cx = 112;
+		cy = -48;
 	}
 	/*else {
 		cy = (float)mh - (float)sh;
 	}*/
 	//if (cy <= -HUD_HEIGHT)//Top Edge
 	//	cy = -HUD_HEIGHT;
-	if (cy + sh >= mh)//Bottom Edge
-		cy = (float)mh - (float)sh;
-	if (cy <= 0)//Left Edge
-		cy = 0;
+	if (!isHiddenMap) {
+		if (cy + sh >= mh)//Bottom Edge
+			cy = (float)mh - (float)sh;
+		if (cy <= 0)//Left Edge
+			cy = 0;
+	}
 
 	game->SetCamPos(cx, cy);
 	map->SetCamPos(cx, cy);
