@@ -1,11 +1,12 @@
 #pragma once
 #include "GameObject.h"
+#include "PiranhaPipe.h"
 
 #define PIRANHA_PLANT_BBOX_WIDTH 16
 #define PIRANHA_PLANT_BBOX_HEIGHT 25
 
-#define PIRANHA_PLANT_DOWN_TIME_OUT 3000
-#define PIRANHA_PLANT_UP_TIME_OUT 3000
+#define PIRANHA_PLANT_DOWN_TIME_OUT 2000
+#define PIRANHA_PLANT_UP_TIME_OUT 2000
 
 #define ID_ANI_PIRANHA_PLANT 500001
 #define PIRANHA_STATE_UP 100
@@ -34,8 +35,11 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-	virtual int IsCollidable() { return 1; };
-	virtual int IsBlocking() { return 0; }
+	//virtual int IsCollidable() { return 1; };
+	virtual int IsBlocking(float nx, float ny, CGameObject* target) {
+		if (dynamic_cast<PiranhaPipe*>(target))	return false;
+		else return true;
+	}
 	virtual void OnNoCollision(DWORD dt);
 };
 

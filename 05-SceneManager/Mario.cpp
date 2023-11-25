@@ -12,6 +12,8 @@
 #include "QuestionBrick.h"
 #include "Leaf.h"
 #include "FirePiranhaPlant.h"
+#include "PiranhaPlant.h"
+#include "PiranhaPipe.h"
 #include "Koopas.h"
 #include "Score.h"
 #include "GoldBrick.h"
@@ -45,7 +47,6 @@ CMario::CMario(float x, float y) : CGameObject(x, y) {
 	hand = NULL;
 	isDisable = false;
 	inPipeTimer.Stop();
-//	tail = new CTail(x, y);
 }
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -108,7 +109,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	
 	if (isReturnY) {
 		//DebugOut(L"isReturnY %d\n", isReturnY);
-		y = y - 5;
+		y = y - 10;
 		isReturnY = false;
 	}
 
@@ -149,8 +150,14 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (e->ny != 0 && e->obj->IsBlocking(e->nx, e->ny, this))
 	{
+
 		vy = 0;
 		if (e->ny < 0) {
+			/// Why PiranhaPlant not delete with mario in CollisionWithPlant ?!!!
+			if (dynamic_cast<PiranhaPlant*>(e->obj)) {
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+				e->obj->Delete();
+			}
 			isOnPlatform = true;
 		}
 		else {
@@ -268,7 +275,14 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithPiranha(LPCOLLISIONEVENT e)
 {
-		SetHurt();	
+	//FirePiranhaPlant* firepiranha = dynamic_cast<FirePiranhaPlant*>(e->obj);
+	//DebugOut(L"va cham"); 
+	if (e->ny < 0 && dynamic_cast<PiranhaPipe*>(e->obj) || e->ny < 0 && dynamic_cast<FirePiranhaPlant*>(e->obj)) {
+
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			e->obj->Delete();
+
+	}else SetHurt();
 }
 
 void CMario::OnCollisionWithFireball(LPCOLLISIONEVENT e)
